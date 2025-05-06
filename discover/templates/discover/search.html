@@ -1,0 +1,11 @@
+{% extends "discover/base.html" %}
+
+{% block content %}
+  {% if q %}
+    <h1>Results for "{{ q }}"</h1>
+    <!-- your loop over results… -->
+  {% else %}
+    <h1>Welcome to MediaFinder</h1>
+    <p>Use the search bar above to look up movies.</p>
+  {% endif %}
+{% endblock %}

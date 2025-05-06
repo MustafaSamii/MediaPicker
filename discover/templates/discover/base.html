@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>MediaFinder</title>
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="…"
+    crossorigin="anonymous"
+  >
+  <link href="{% static 'discover/css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+
+  <!-- your navbar (as you already have it) -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'discover:search' %}">MediaFinder</a>
+      <button class="navbar-toggler" type="button"
+              data-bs-toggle="collapse" data-bs-target="#mainNav"
+              aria-controls="mainNav" aria-expanded="false"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <div class="ms-auto">
+          <form class="d-flex" method="get"
+                action="{% url 'discover:search' %}">
+            <input class="form-control me-2"
+                   type="search" name="q"
+                   placeholder="Search movies…"
+                   required>
+            <button class="btn btn-primary" type="submit">Go</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    {% block content %}
+    <!-- each page’s content will go here -->
+    {% endblock %}
+  </div>
+
+  <!-- Bootstrap JS bundle (Popper + JS) -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.bundle.min.js"
+    integrity="…"
+    crossorigin="anonymous"
+  ></script>
+</body>
+</html>
