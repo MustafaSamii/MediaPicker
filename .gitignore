@@ -1,0 +1,3 @@
+# .gitignore (put this at the repo root)
+venv/
+openai-python/venv/
