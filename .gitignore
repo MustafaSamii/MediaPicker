@@ -1,3 +1,15 @@
-# .gitignore (put this at the repo root)
+# Python virtual environments
 venv/
+
+# If your fork has its own venv
 openai-python/venv/
+
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+
+# SQLite DB (if you’re using it in dev)
+db.sqlite3
+
+# Django staticfiles collect
+staticfiles/
