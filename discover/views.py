@@ -5,39 +5,26 @@ import requests
 from django.shortcuts import render
 import openai
 
-#load .env
 load_dotenv()
 
-# Load your keys (or do this in settings.py once globally)
 openai.api_key = os.getenv('OPENAI_API_KEY')
 TMDB_KEY = os.getenv('TMDB_API_KEY')
-
-def parse_query(text: str) -> dict:
-    prompt = (
-        "Extract in JSON:\n"
-        "- genre (comma-separated)\n"
-        "- year_range (start, end)\n"
-        f"User: {text}\n"
-    )
-    resp = openai.ChatCompletion.create(
-        model="gpt-4o-mini",
-        messages=[{"role":"user","content":prompt}]
-    )
-    return json.loads(resp.choices[0].message.content)
 
 def get_genres():
     url = "https://api.themoviedb.org/3/genre/movie/list"
     return requests.get(url, params={"api_key": TMDB_KEY}).json().get("genres", [])
 
-def tmdb_search(genre_ids, min_rating, max_length):
+def tmdb_search(genre_ids, min_rating, min_length, max_length, min_votes=50):
     url = "https://api.themoviedb.org/3/discover/movie"
     params = {
-        "api_key": TMDB_KEY,
-        "with_genres": ",".join(genre_ids),
-        "vote_average.gte": min_rating,
-        "with_runtime.lte": max_length,
-        "sort_by": "vote_average.desc",
-        "page": 1,
+        "api_key":           TMDB_KEY,
+        "with_genres":       ",".join(genre_ids),
+        "vote_average.gte":  float(min_rating),
+        "vote_count.gte":    min_votes,
+        "with_runtime.gte":  int(min_length),
+        "with_runtime.lte":  int(max_length),
+        "sort_by":           "vote_average.desc",
+        "page":              1,
     }
     data = requests.get(url, params=params).json().get("results", [])
     return data[:10]  # top 10
@@ -45,23 +32,24 @@ def tmdb_search(genre_ids, min_rating, max_length):
 def search(request):
     genres = get_genres()
     results = []
-    # Default form values
     selected = {
-        "genre": [],
+        "genre":      [],
         "min_rating": 0,
+        "min_length": 0,
         "max_length": 300,
     }
 
     if request.method == "POST":
         form = request.POST
         selected["genre"]      = form.getlist("genre")
-        selected["min_rating"] = form["min_rating"]
-        selected["max_length"] = form["max_length"]
+        selected["min_rating"] = float(form["min_rating"])
+        selected["min_length"] = int(form["min_length"])
+        selected["max_length"] = int(form["max_length"])
 
-        # Call TMDb directly (or via an LLM wrapper if you like)
         results = tmdb_search(
             genre_ids=selected["genre"],
             min_rating=selected["min_rating"],
+            min_length=selected["min_length"],
             max_length=selected["max_length"],
         )
 

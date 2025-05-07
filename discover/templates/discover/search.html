@@ -1,23 +1,15 @@
-{# discover/templates/discover/search.html #}
 {% extends "discover/base.html" %}
 
 {% block content %}
   <h2 class="mb-4">Find Your Next Movie</h2>
 
-  <!-- Parameter Form -->
   <form method="post" class="mb-5">
     {% csrf_token %}
     <div class="row g-3">
       <!-- Genres -->
       <div class="col-md-4">
         <label for="genre" class="form-label">Genre</label>
-          <select
-            name="genre"
-            id="genre"
-            class="form-select"
-            multiple
-            size="8"               <!-- shows 8 items tall -->
-  
+        <select name="genre" id="genre" class="form-select" multiple size="8">
           {% for g in genres %}
             <option value="{{ g.id }}"
               {% if g.id|stringformat:"s" in selected.genre %}selected{% endif %}>
@@ -35,7 +27,15 @@
                value="{{ selected.min_rating }}">
       </div>
 
-      <!-- Max Length -->
+      <!-- Min Runtime -->
+      <div class="col-md-4">
+        <label for="min_length" class="form-label">Min Runtime (min)</label>
+        <input type="number" name="min_length" id="min_length"
+               class="form-control" min="0" max="500" step="10"
+               value="{{ selected.min_length }}">
+      </div>
+
+      <!-- Max Runtime -->
       <div class="col-md-4">
         <label for="max_length" class="form-label">Max Runtime (min)</label>
         <input type="number" name="max_length" id="max_length"
@@ -47,26 +47,21 @@
     <button type="submit" class="btn btn-success mt-4">🔍 Find Movies</button>
   </form>
 
-  <!-- “Chat”-style Results Panel -->
   {% if results %}
-    <div class="border rounded p-3 mb-4" style="max-height: 500px; overflow-y: auto;">
+    <div class="border rounded p-3 mb-4" style="max-height:500px;overflow-y:auto;">
       {% for movie in results %}
         <div class="d-flex mb-4">
-          <!-- Poster image column -->
           {% if movie.poster_path %}
-            <img
-              src="https://image.tmdb.org/t/p/w154{{ movie.poster_path }}"
-              alt="Poster for {{ movie.title }}"
-              class="me-3 rounded shadow-sm"
-            />
+            <img src="https://image.tmdb.org/t/p/w154{{ movie.poster_path }}"
+                 alt="Poster for {{ movie.title }}"
+                 class="me-3 rounded shadow-sm">
           {% else %}
             <div class="bg-secondary text-white d-flex align-items-center justify-content-center me-3"
-                 style="width:154px; height:231px;">
+                 style="width:154px;height:231px;">
               No Image
             </div>
           {% endif %}
 
-          <!-- Movie info column -->
           <div>
             <h5>{{ movie.title }}</h5>
             <p>⭐ {{ movie.vote_average }}</p>
