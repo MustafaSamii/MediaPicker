@@ -4,20 +4,25 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MediaFinder</title>
   <!-- Bootstrap CSS -->
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
     rel="stylesheet"
   >
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="{% static 'discover/css/style.css' %}" rel="stylesheet">
 </head>
-<body>
+<body class="bg-light">
 
-  <!-- your navbar (as you already have it) -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
     <div class="container">
-      <a class="navbar-brand" href="{% url 'discover:search' %}">MediaFinder</a>
+      <a class="navbar-brand fw-bold" href="{% url 'discover:search' %}">
+        <i class="fas fa-film me-2"></i>MediaFinder
+      </a>
       <button class="navbar-toggler" type="button"
               data-bs-toggle="collapse" data-bs-target="#mainNav"
               aria-controls="mainNav" aria-expanded="false"
@@ -25,25 +30,48 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="mainNav">
-        <div class="ms-auto">
-          <form class="d-flex" method="get"
-                action="{% url 'discover:search' %}">
-            <input class="form-control me-2"
-                   type="search" name="q"
-                   placeholder="Search movies…"
-                   required>
-            <button class="btn btn-primary" type="submit">Go</button>
-          </form>
-        </div>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'discover:search' %}">Discover</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'discover:watched' %}">Watched</a>
+          </li>
+        </ul>
+        <form class="d-flex" method="get" action="{% url 'discover:search' %}">
+          <input class="form-control me-2" type="search" name="q" 
+                 placeholder="Search movies…" aria-label="Search">
+          <button class="btn btn-light" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
       </div>
     </div>
   </nav>
-  <div class="p-3 mb-2 bg-light text-dark">.bg-light</div>
-  <div class="container mt-4">
+  
+  <div class="container py-4">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+    
     {% block content %}
-    <!-- each page’s content will go here -->
+    <!-- each page's content will go here -->
     {% endblock %}
   </div>
 
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-4 mt-5">
+    <div class="container text-center">
+      <p class="mb-0">&copy; 2025 MediaFinder</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
