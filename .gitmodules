@@ -1,0 +1,3 @@
+[submodule "openai-python"]
+	path = openai-python
+	url = https://github.com/MustafaSamii/openai-python.git
