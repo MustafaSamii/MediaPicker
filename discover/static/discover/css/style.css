@@ -1,13 +1,46 @@
-/* static/discover/css/style.css */
-.user-bubble {
-    background: #0d6efd; color: white;
-    padding: .75rem; border-radius: .5rem; align-self: flex-end;
-    max-width: 70%;
-  }
-  .bot-bubble {
-    background: #f1f1f1; color: #333;
-    padding: .75rem; border-radius: .5rem; align-self: flex-start;
-    max-width: 70%;
-  }
-  #chat-window { display: flex; flex-direction: column; }
-  
+/* Custom font */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  padding-bottom: 0;
+}
+
+/* Navbar styling */
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Card styling */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Movie poster styling */
+.img-fluid.rounded-start {
+  object-fit: cover;
+  height: 100%;
+}
+
+/* Form styling */
+.form-control:focus, .form-select:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Button styling */
+.btn-primary {
+  font-weight: 500;
+}
+
+/* Footer styling */
+footer {
+  margin-top: auto;
+}
